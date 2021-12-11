@@ -68,6 +68,8 @@ private slots:
 
     void on_lineEdit_input_textChanged(const QString &arg1);
 
+    void on_pushButton_op_equal_clicked();
+
 private:
     Ui::MainWindow *ui;
     void mousePressEvent(QMouseEvent *event);

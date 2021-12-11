@@ -123,7 +123,15 @@ void MainWindow::on_pushButton_num_9_clicked()
 void MainWindow::on_pushButton_op_dot_clicked()
 {
     QString text = this->ui->lineEdit_input->text();
-    text += ".";
+    int size = text.size();
+    if(size == 0 || (!text[size-1].isNumber() && text[size-1] !="."))
+    {
+        text += "0.";
+    }
+    else
+    {
+        text += ".";
+    }
     this->ui->lineEdit_input->setText(text);
     return;
 }
@@ -279,7 +287,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                 {
                     if(text[i] == valid_chars[j])
                     {
-                        if(text[i] == "." && after_dot)
+                        if((text[i] == "." && after_dot) || (text[i] == "." && !text[i+1].isNumber()))
                         {
                             ui->pushButton_op_equal->setText("Invalid input!");
                             ui->pushButton_op_equal->setDisabled(true);
@@ -425,5 +433,276 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
 
     ui->pushButton_op_equal->setText("=");
     ui->pushButton_op_equal->setEnabled(true);
+    return;
+}
+
+// a function to put space between oprands and operators
+void seperator(QString &exp)
+{
+    for (int i = 0; i < exp.size(); i++)
+    {
+        if(exp[i].isNumber() || exp[i] == '.' || exp == " ")
+        {
+            continue;
+        }
+        else if(exp[i] == '(')
+        {
+            exp.insert(i+1, " ");
+            i++;
+        }
+        else if(exp[i] == ')')
+        {
+            exp.insert(i, " ");
+            i++;
+        }
+        else
+        {
+            if(exp[i] == "-")
+            {
+                if(i == 0 || (i != 0 && exp[i-2] == "("))
+                {
+                    exp.remove(i,1);
+                    exp.insert(i, "-1 * ");
+                    i += 4;
+                }
+                else
+                {
+                    exp.insert(i, " ");
+                    i++;
+                    exp.insert(i+1, " ");
+                    i += 1;
+                }
+            }
+            else
+            {
+                exp.insert(i, " ");
+                i++;
+                exp.insert(i+1, " ");
+                i += 1;
+            }
+        }
+    }
+    return;
+}
+
+// a function returns the precedence of a character
+int precedence(QString str)
+{
+    if(str == "^")
+    {
+        return 3;
+    }
+    if(str == "*" || str == "/" || str == "%")
+    {
+        return 2;
+    }
+    if(str == "+" || str == "-")
+    {
+        return 1;
+    }
+    if(str == "(" || str == ")")
+    {
+        return 0;
+    }
+    else
+    {
+        return -1;
+    }
+}
+
+// a function converts infix to postfix
+QString infix_to_postfix(QString exp)
+{
+    stack<QString> st;
+    QString output, temp;
+
+    for (int i = 0; i < exp.size(); i++)
+    {
+        temp = "";
+        while (i < exp.size() && exp[i] != ' ')
+        {
+            temp += exp[i];
+            i++;
+        }
+
+        if(precedence(temp) > 0)  // then it's operator
+        {
+            if(st.empty() || precedence(temp) > precedence(st.top()) || (temp == "^" && st.top() == "^"))
+            {
+                st.push(temp);
+            }
+            else
+            {
+                while(!st.empty() && precedence(temp) <= precedence(st.top()))
+                {
+                    output += st.top();
+                    output += " ";
+                    st.pop();
+                }
+                st.push(temp);
+            }
+        }
+        else if(precedence(temp) == 0)    // then it's round bracket
+        {
+            if(temp == "(")
+            {
+                st.push(temp);
+            }
+            else
+            {
+                while (st.top() != "(")
+                {
+                    output += st.top();
+                    output += " ";
+                    st.pop();
+                }
+                st.pop();
+            }
+        }
+        else    // then it's operand
+        {
+            output += temp;
+            output += " ";
+        }
+    }
+    while (!st.empty())
+    {
+        output += st.top();
+        output += " ";
+        st.pop();
+    }
+
+    return output;
+}
+
+// a function calculate and return a string which is the answer of inputted postfix
+QString calculate_postFix(QString exp)
+{
+    stack<QString> st;
+    QString str1, str2, str;
+    double num1, num2, answer = 0;
+
+    for (int i = 0; i < exp.size(); i++)
+    {
+        str = "";
+        while (i < exp.size() && exp[i] != ' ')
+        {
+            str += exp[i];
+            i++;
+        }
+
+        if(str == "+" || str == "-" || str == "/" || str == "*" || str == "^" || str == "%")
+        {
+            str1 = st.top();
+            st.pop();
+            str2 = st.top();
+            st.pop();
+
+            num1 = str1.toDouble();
+            num2 = str2.toDouble();
+
+            if(str == "+")
+            {
+                answer = num1 + num2;
+            }
+            else if(str == "-")
+            {
+                answer = num2 - num1;
+            }
+            else if(str == "*")
+            {
+                answer = num1 * num2;
+            }
+            else if(str == "%")
+            {
+                if(num1 == 0 || floor(num1) != num1 || floor(num2) != num2)
+                {
+                    throw "ERROR";
+                }
+                else
+                {
+                    answer = (int) num2 % (int) num1;
+                }
+            }
+            else if(str == "/")
+            {
+                if(num1 == 0)
+                {
+                    throw "ERROR";
+                }
+                else
+                {
+                    answer = num2 / num1;
+                }
+            }
+            else if(str == "^")
+            {
+                double tmp = 1 / num1;
+                bool is_even = false;
+                if(int(tmp) == tmp)
+                {
+                    if((int)tmp % 2 == 0)
+                    {
+                       is_even = true;
+                    }
+                }
+                if(num2 < 0 && (num1 < 1 && num1 > 0))
+                {
+                    if(is_even)
+                    {
+                        throw "ERROR";
+                    }
+                    else
+                    {
+                        answer = pow((-1*num2), num1);
+                        answer *= -1;
+                    }
+                }
+                else
+                {
+                    answer = pow(num2, num1);
+                }
+            }
+            str = QString::number(answer);
+            st.push(str);
+        }
+        else
+        {
+            if(str == "Π")
+            {
+                st.push(QString::number(M_PI));
+            }
+            else if(str != "")
+            {
+                st.push(str);
+            }
+        }
+
+    }
+
+    str = st.top();
+    st.pop();
+
+    return str;
+}
+
+void MainWindow::on_pushButton_op_equal_clicked()
+{
+    QString exp = ui->lineEdit_input->text();
+    seperator(exp);
+
+    exp = infix_to_postfix(exp);
+
+    try
+    {
+        QListWidgetItem *ans = new QListWidgetItem(calculate_postFix(exp));
+        ui->listWidget->addItem(ans);
+    }
+    catch (...)
+    {
+        QListWidgetItem *ans = new QListWidgetItem("Error");
+        ui->listWidget->addItem(ans);
+    }
+
     return;
 }
