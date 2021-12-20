@@ -459,7 +459,7 @@ void seperator(QString &exp)
         {
             if(exp[i] == "-")
             {
-                if(i == 0 || (i != 0 && exp[i-2] == "("))
+                if(i == 0 || (i > 1 && exp[i-2] == "("))
                 {
                     exp.remove(i,1);
                     exp.insert(i, "-1 * ");
@@ -575,8 +575,47 @@ QString infix_to_postfix(QString exp)
     return output;
 }
 
-// a function calculate and return a string which is the answer of inputted postfix
-QString calculate_postFix(QString exp)
+// a function converts postfix to infix
+QString postfix_to_infix(QString exp)
+{
+    if(exp.size()==1)
+    {
+        return exp;
+    }
+    stack<QString> st;
+    QString output, temp, tmp1, tmp2;
+
+    for(int i = 0; i < exp.size()-1; i++)
+    {
+        temp = "";
+
+        while(i < exp.size() && exp[i] != " ")
+        {
+            temp += exp[i];
+            i++;
+        }
+
+        if(precedence(temp) < 0)	// then it's an operand
+        {
+            st.push(temp);
+        }
+        else
+        {
+            tmp1 = st.top();
+            st.pop();
+            tmp2 = st.top();
+            st.pop();
+            st.push("(" + tmp2 + temp + tmp1 + ")");
+        }
+    }
+
+    output = st.top();
+
+    return output;
+}
+
+// a function calculates and returns a string which is the answer of inputted postfix and a stack which contains calculation steps
+QString calculate_postFix(QString exp, stack<QString> &steps)
 {
     stack<QString> st;
     QString str1, str2, str;
@@ -663,8 +702,24 @@ QString calculate_postFix(QString exp)
                     answer = pow(num2, num1);
                 }
             }
-            str = QString::number(answer);
-            st.push(str);
+
+            exp.remove(0, i+1);
+
+            str = QString::number(answer) + " ";
+
+            exp.insert(0, str);
+
+            while(!st.empty())
+            {
+                exp.insert(0, st.top() + " ");
+                st.pop();
+            }
+
+            steps.push(postfix_to_infix(exp));
+
+            i = -1;
+
+//            st.push(str);
         }
         else
         {
@@ -686,16 +741,49 @@ QString calculate_postFix(QString exp)
     return str;
 }
 
+void stack_rev(stack<QString> &st)
+{
+    stack<QString> rev_st;
+    while(!st.empty())
+    {
+        rev_st.push(st.top());
+        st.pop();
+    }
+    st = rev_st;
+}
+
 void MainWindow::on_pushButton_op_equal_clicked()
 {
+    stack<QString> steps;
+    ui->listWidget->clear();
+
+
     QString exp = ui->lineEdit_input->text();
     seperator(exp);
+
+    QListWidgetItem *tmp = new QListWidgetItem("Your Input:");
+    ui->listWidget->addItem(tmp);
+
+    QListWidgetItem *inp = new QListWidgetItem(exp);
+    ui->listWidget->addItem(inp);
 
     exp = infix_to_postfix(exp);
 
     try
     {
-        QListWidgetItem *ans = new QListWidgetItem(calculate_postFix(exp));
+        QListWidgetItem *ans = new QListWidgetItem(calculate_postFix(exp, steps));
+
+        stack_rev(steps);
+
+        int size = steps.size();
+        for(int i = 0; i < size; i++)
+        {
+            QListWidgetItem *tmp = new QListWidgetItem(steps.top());
+            ui->listWidget->addItem(tmp);
+            steps.pop();
+        }
+        QListWidgetItem *tmp = new QListWidgetItem("Answer:");
+        ui->listWidget->addItem(tmp);
         ui->listWidget->addItem(ans);
     }
     catch (...)
