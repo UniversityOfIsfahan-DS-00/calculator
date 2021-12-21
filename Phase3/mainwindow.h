@@ -70,6 +70,8 @@ private slots:
 
     void on_pushButton_op_equal_clicked();
 
+    void on_pushButton_tree_clicked();
+
 private:
     Ui::MainWindow *ui;
     void mousePressEvent(QMouseEvent *event);

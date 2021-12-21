@@ -2,6 +2,10 @@
 #include "ui_mainwindow.h"
 #include "mystack.h"
 #include "mystack.cpp"
+#include "tree.h"
+#include "tree.cpp"
+#include "tree_node.h"
+#include "tree_node.cpp"
 
 #include <bits/stdc++.h>
 
@@ -513,7 +517,7 @@ int precedence(QString str)
 // a function converts infix to postfix
 QString infix_to_postfix(QString exp)
 {
-    stack<QString> st;
+    MyStack<QString> st;
     QString output, temp;
 
     for (int i = 0; i < exp.size(); i++)
@@ -527,15 +531,15 @@ QString infix_to_postfix(QString exp)
 
         if(precedence(temp) > 0)  // then it's operator
         {
-            if(st.empty() || precedence(temp) > precedence(st.top()) || (temp == "^" && st.top() == "^"))
+            if(st.isEmpty() || precedence(temp) > precedence(st.peek()->get_data()) || (temp == "^" && st.peek()->get_data() == "^"))
             {
                 st.push(temp);
             }
             else
             {
-                while(!st.empty() && precedence(temp) <= precedence(st.top()))
+                while(!st.isEmpty() && precedence(temp) <= precedence(st.peek()->get_data()))
                 {
-                    output += st.top();
+                    output += st.peek()->get_data();
                     output += " ";
                     st.pop();
                 }
@@ -550,9 +554,9 @@ QString infix_to_postfix(QString exp)
             }
             else
             {
-                while (st.top() != "(")
+                while (st.peek()->get_data() != "(")
                 {
-                    output += st.top();
+                    output += st.peek()->get_data();
                     output += " ";
                     st.pop();
                 }
@@ -565,9 +569,9 @@ QString infix_to_postfix(QString exp)
             output += " ";
         }
     }
-    while (!st.empty())
+    while (!st.isEmpty())
     {
-        output += st.top();
+        output += st.peek()->get_data();
         output += " ";
         st.pop();
     }
@@ -582,7 +586,7 @@ QString postfix_to_infix(QString exp)
     {
         return exp;
     }
-    stack<QString> st;
+    MyStack<QString> st;
     QString output, temp, tmp1, tmp2;
 
     for(int i = 0; i < exp.size()-1; i++)
@@ -601,23 +605,23 @@ QString postfix_to_infix(QString exp)
         }
         else
         {
-            tmp1 = st.top();
+            tmp1 = st.peek()->get_data();
             st.pop();
-            tmp2 = st.top();
+            tmp2 = st.peek()->get_data();
             st.pop();
             st.push("(" + tmp2 + temp + tmp1 + ")");
         }
     }
 
-    output = st.top();
+    output = st.peek()->get_data();
 
     return output;
 }
 
 // a function calculates and returns a string which is the answer of inputted postfix and a stack which contains calculation steps
-QString calculate_postFix(QString exp, stack<QString> &steps)
+QString calculate_postFix(QString exp, MyStack<QString> &steps)
 {
-    stack<QString> st;
+    MyStack<QString> st;
     QString str1, str2, str;
     double num1, num2, answer = 0;
 
@@ -632,9 +636,9 @@ QString calculate_postFix(QString exp, stack<QString> &steps)
 
         if(str == "+" || str == "-" || str == "/" || str == "*" || str == "^" || str == "%")
         {
-            str1 = st.top();
+            str1 = st.peek()->get_data();
             st.pop();
-            str2 = st.top();
+            str2 = st.peek()->get_data();
             st.pop();
 
             num1 = str1.toDouble();
@@ -709,17 +713,15 @@ QString calculate_postFix(QString exp, stack<QString> &steps)
 
             exp.insert(0, str);
 
-            while(!st.empty())
+            while(!st.isEmpty())
             {
-                exp.insert(0, st.top() + " ");
+                exp.insert(0, st.peek()->get_data() + " ");
                 st.pop();
             }
 
             steps.push(postfix_to_infix(exp));
 
             i = -1;
-
-//            st.push(str);
         }
         else
         {
@@ -735,26 +737,27 @@ QString calculate_postFix(QString exp, stack<QString> &steps)
 
     }
 
-    str = st.top();
+    str = st.peek()->get_data();
     st.pop();
 
     return str;
 }
 
-void stack_rev(stack<QString> &st)
+template<typename T>
+MyStack<T> * stack_rev(MyStack<T> &st)
 {
-    stack<QString> rev_st;
-    while(!st.empty())
+    MyStack<T> * rev_st= new MyStack<T>;
+    while(!st.isEmpty())
     {
-        rev_st.push(st.top());
+        rev_st->push(st.peek()->get_data());
         st.pop();
     }
-    st = rev_st;
+    return rev_st;
 }
 
 void MainWindow::on_pushButton_op_equal_clicked()
 {
-    stack<QString> steps;
+    MyStack<QString> steps;
     ui->listWidget->clear();
 
 
@@ -773,12 +776,11 @@ void MainWindow::on_pushButton_op_equal_clicked()
     {
         QListWidgetItem *ans = new QListWidgetItem(calculate_postFix(exp, steps));
 
-        stack_rev(steps);
+        steps = *stack_rev(steps);
 
-        int size = steps.size();
-        for(int i = 0; i < size; i++)
+        for(int i = 0; !steps.isEmpty(); i++)
         {
-            QListWidgetItem *tmp = new QListWidgetItem(steps.top());
+            QListWidgetItem *tmp = new QListWidgetItem(steps.peek()->get_data());
             ui->listWidget->addItem(tmp);
             steps.pop();
         }
@@ -790,6 +792,85 @@ void MainWindow::on_pushButton_op_equal_clicked()
     {
         QListWidgetItem *ans = new QListWidgetItem("Error");
         ui->listWidget->addItem(ans);
+    }
+
+    return;
+}
+
+void MainWindow::on_pushButton_tree_clicked()
+{
+    ui->listWidget->clear();
+
+    QString exp = ui->lineEdit_input->text();
+
+    seperator(exp);
+
+    exp = infix_to_postfix(exp);
+
+    // creating expression tree
+
+    MyStack<tree_node<QString> *> st;
+    QString str, temp;
+
+    tree_node<QString> * tmp1, * tmp2;
+
+    for (int i = 0; i < exp.size(); i++)
+    {
+        str = "";
+        while (i < exp.size() && exp[i] != ' ')
+        {
+            str += exp[i];
+            i++;
+        }
+
+        if(str == "+" || str == "-" || str == "/" || str == "*" || str == "^" || str == "%")
+        {
+            tree_node<QString> * tmp = new tree_node<QString>;
+            tmp->set_data(str);
+
+            tmp1 = st.peek()->get_data();
+            st.pop();
+
+            tmp2 = st.peek()->get_data();
+            st.pop();
+
+            tmp->set_right(tmp1);
+            tmp->set_left(tmp2);
+
+            st.push(tmp);
+        }
+        else
+        {
+            tree_node<QString> * tmp = new tree_node<QString>;
+            tmp->set_data(str);
+            st.push(tmp);
+        }
+
+    }
+
+    tree<QString> t;
+    t.set_root(st.peek()->get_data());
+    st.pop();				// st is empty now
+
+    MyStack<QString> *sst = new MyStack<QString>;
+
+    print_level_order(t.get_root(), sst);
+
+    sst = stack_rev(*sst);
+
+    for(int i = 0; !sst->isEmpty(); i++)
+    {
+        temp = sst->peek()->get_data();
+
+//        for(int j = sst->get_size()*sst->get_size(); j > 0; j--)
+//        {
+//            temp.insert(0, " ");
+//        }
+
+        QListWidgetItem *tmp = new QListWidgetItem(temp);
+        sst->pop();
+
+        ui->listWidget->addItem(tmp);
     }
 
     return;

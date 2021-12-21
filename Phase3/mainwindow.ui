@@ -312,7 +312,7 @@ QPushButton:hover
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_tools">
+            <widget class="QPushButton" name="pushButton_tree">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -353,7 +353,7 @@ QPushButton:hover
 }</string>
              </property>
              <property name="text">
-              <string>Tools</string>
+              <string>Tree</string>
              </property>
             </widget>
            </item>

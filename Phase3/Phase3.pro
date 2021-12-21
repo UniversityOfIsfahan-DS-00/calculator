@@ -12,12 +12,16 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mystack.cpp \
-    node.cpp
+    node.cpp \
+    tree.cpp \
+    tree_node.cpp
 
 HEADERS += \
     mainwindow.h \
     mystack.h \
-    node.h
+    node.h \
+    tree.h \
+    tree_node.h
 
 FORMS += \
     mainwindow.ui
