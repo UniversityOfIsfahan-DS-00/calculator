@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->history = {};
 }
 
 MainWindow::~MainWindow()
@@ -253,17 +255,27 @@ void MainWindow::on_pushButton_num_0_clicked()
 
 // input validation
 void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
-{
+{   
     QVector<QString> valid_chars = {"+", "-", "*", "/", "^", "%", ".", ")", "(", "Π"};
     QVector<QString> valid_op = {"+", "-", "*", "/", "^", "%"};
     bool after_dot = false;
 
+    // removing spaces
     QString non_const_text = org_text;
 
     non_const_text = non_const_text.simplified();
     non_const_text.replace(" ", "");
 
     const QString text = non_const_text;
+
+    // checking for empty strings
+    if(text == "")
+    {
+        ui->pushButton_op_equal->setText("Invalid input!");
+        ui->pushButton_op_equal->setDisabled(true);
+        ui->pushButton_tree->setDisabled(true);
+        return;
+    }
 
     for (int i = 0; i < text.size(); i++)
     {
@@ -272,13 +284,15 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
         {
             ui->pushButton_op_equal->setText("Invalid input!");
             ui->pushButton_op_equal->setDisabled(true);
+            ui->pushButton_tree->setDisabled(true);
             return;
         }
         // checking last character
-        else if(i == text.size()-1 && !text[i].isNumber() && (text[i] != ")" && text[i] != "Π"))
+        else if((i == text.size()-1 && !text[i].isNumber() && text[i] != ")") && (text[i] != "Π" || (i > 0 && text[i] == "Π" && text[i-1].isNumber())))
         {
             ui->pushButton_op_equal->setText("Invalid input!");
             ui->pushButton_op_equal->setDisabled(true);
+            ui->pushButton_tree->setDisabled(true);
             return;
         }
         else
@@ -295,6 +309,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                         {
                             ui->pushButton_op_equal->setText("Invalid input!");
                             ui->pushButton_op_equal->setDisabled(true);
+                            ui->pushButton_tree->setDisabled(true);
                             return;
                         }
                         else if(text[i] == ".")
@@ -313,6 +328,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                 {
                     ui->pushButton_op_equal->setText("Invalid input!");
                     ui->pushButton_op_equal->setDisabled(true);
+                    ui->pushButton_tree->setDisabled(true);
                     return;
                 }
             }
@@ -325,10 +341,11 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
     for(int i = 0; i < text.size()-1; i++)
     {
         current = false, next = false;
-        if(text[i] == "Π" && text[i+1] == "Π")
+        if((text[i] == "Π" && text[i+1] == "Π") || (text[i] == "Π" && text[i+1].isNumber()) || (i > 0 && text[i] == "Π" && text[i-1].isNumber()))
         {
             ui->pushButton_op_equal->setText("Invalid input!");
             ui->pushButton_op_equal->setDisabled(true);
+            ui->pushButton_tree->setDisabled(true);
             return;
         }
         else if(!text[i].isNumber())
@@ -348,6 +365,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
             {
                 ui->pushButton_op_equal->setText("Invalid input!");
                 ui->pushButton_op_equal->setDisabled(true);
+                ui->pushButton_tree->setDisabled(true);
                 return;
             }
         }
@@ -366,6 +384,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
             {
                 ui->pushButton_op_equal->setText("Invalid input!");
                 ui->pushButton_op_equal->setDisabled(true);
+                ui->pushButton_tree->setDisabled(true);
                 return;
             }
 
@@ -376,6 +395,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                 {
                     ui->pushButton_op_equal->setText("Invalid input!");
                     ui->pushButton_op_equal->setDisabled(true);
+                    ui->pushButton_tree->setDisabled(true);
                     return;
                 }
             }
@@ -383,6 +403,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
             {
                 ui->pushButton_op_equal->setText("Invalid input!");
                 ui->pushButton_op_equal->setDisabled(true);
+                ui->pushButton_tree->setDisabled(true);
                 return;
             }
         }
@@ -392,6 +413,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
             {
                 ui->pushButton_op_equal->setText("Invalid input!");
                 ui->pushButton_op_equal->setDisabled(true);
+                ui->pushButton_tree->setDisabled(true);
                 return;
             }
             else
@@ -405,6 +427,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                 {
                     ui->pushButton_op_equal->setText("Invalid input!");
                     ui->pushButton_op_equal->setDisabled(true);
+                    ui->pushButton_tree->setDisabled(true);
                     return;
                 }
             }
@@ -416,6 +439,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
                 {
                     ui->pushButton_op_equal->setText("Invalid input!");
                     ui->pushButton_op_equal->setDisabled(true);
+                    ui->pushButton_tree->setDisabled(true);
                     return;
                 }
             }
@@ -423,6 +447,7 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
             {
                 ui->pushButton_op_equal->setText("Invalid input!");
                 ui->pushButton_op_equal->setDisabled(true);
+                ui->pushButton_tree->setDisabled(true);
                 return;
             }
         }
@@ -432,11 +457,13 @@ void MainWindow::on_lineEdit_input_textChanged(const QString &org_text)
     {
         ui->pushButton_op_equal->setText("Invalid input!");
         ui->pushButton_op_equal->setDisabled(true);
+        ui->pushButton_tree->setDisabled(true);
         return;
     }
 
     ui->pushButton_op_equal->setText("=");
     ui->pushButton_op_equal->setEnabled(true);
+    ui->pushButton_tree->setEnabled(true);
     return;
 }
 
@@ -756,10 +783,14 @@ MyStack<T> * stack_rev(MyStack<T> &st)
 }
 
 void MainWindow::on_pushButton_op_equal_clicked()
-{
+{   
     MyStack<QString> steps;
     ui->listWidget->clear();
 
+    if(ui->lineEdit_input->text() == "")
+    {
+        return;
+    }
 
     QString exp = ui->lineEdit_input->text();
     seperator(exp);
@@ -770,11 +801,15 @@ void MainWindow::on_pushButton_op_equal_clicked()
     QListWidgetItem *inp = new QListWidgetItem(exp);
     ui->listWidget->addItem(inp);
 
+    QListWidgetItem *stp = new QListWidgetItem("Steps:");
+    ui->listWidget->addItem(stp);
+
     exp = infix_to_postfix(exp);
 
     try
     {
-        QListWidgetItem *ans = new QListWidgetItem(calculate_postFix(exp, steps));
+        QString answer = calculate_postFix(exp, steps);
+        QListWidgetItem *ans = new QListWidgetItem(answer);
 
         steps = *stack_rev(steps);
 
@@ -787,6 +822,8 @@ void MainWindow::on_pushButton_op_equal_clicked()
         QListWidgetItem *tmp = new QListWidgetItem("Answer:");
         ui->listWidget->addItem(tmp);
         ui->listWidget->addItem(ans);
+
+        this->history.push_back(answer);
     }
     catch (...)
     {
@@ -806,6 +843,11 @@ void MainWindow::on_pushButton_tree_clicked()
     seperator(exp);
 
     exp = infix_to_postfix(exp);
+
+    if(exp == "")
+    {
+        return;
+    }
 
     // creating expression tree
 
@@ -842,8 +884,11 @@ void MainWindow::on_pushButton_tree_clicked()
         else
         {
             tree_node<QString> * tmp = new tree_node<QString>;
-            tmp->set_data(str);
-            st.push(tmp);
+            if(str != "")
+            {
+                tmp->set_data(str);
+                st.push(tmp);
+            }
         }
 
     }
@@ -852,26 +897,50 @@ void MainWindow::on_pushButton_tree_clicked()
     t.set_root(st.peek()->get_data());
     st.pop();				// st is empty now
 
-    MyStack<QString> *sst = new MyStack<QString>;
+    MyStack<QString> sst;
 
-    print_level_order(t.get_root(), sst);
+    print_level_order(t.get_root(), &sst);
 
-    sst = stack_rev(*sst);
+    sst = *stack_rev(sst);
 
-    for(int i = 0; !sst->isEmpty(); i++)
+    for(int i = 0; !sst.isEmpty(); i++)
     {
-        temp = sst->peek()->get_data();
-
-//        for(int j = sst->get_size()*sst->get_size(); j > 0; j--)
-//        {
-//            temp.insert(0, " ");
-//        }
+        temp = sst.peek()->get_data();
 
         QListWidgetItem *tmp = new QListWidgetItem(temp);
-        sst->pop();
+        sst.pop();
 
         ui->listWidget->addItem(tmp);
     }
+}
 
+void MainWindow::on_pushButton_history_clicked()
+{
+    history_window *hw = new history_window(&history);
+    hw->setWindowTitle("History");
+    hw->show();
     return;
 }
+
+
+void MainWindow::on_pushButton_ans_clicked()
+{
+    if(history.size() == 0)
+    {
+        return;
+    }
+    QString exp = ui->lineEdit_input->text();
+    QString tmp = history.back();
+    ui->lineEdit_input->setText(exp+tmp);
+    return;
+}
+
+
+void MainWindow::on_pushButton_reset_clicked()
+{
+    ui->lineEdit_input->clear();
+    ui->listWidget->clear();
+    history.clear();
+    return;
+}
+

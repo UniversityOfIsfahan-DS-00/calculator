@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    history_window.cpp \
     main.cpp \
     mainwindow.cpp \
     mystack.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     tree_node.cpp
 
 HEADERS += \
+    history_window.h \
     mainwindow.h \
     mystack.h \
     node.h \
@@ -24,6 +26,7 @@ HEADERS += \
     tree_node.h
 
 FORMS += \
+    history_window.ui \
     mainwindow.ui
 
 # Default rules for deployment.

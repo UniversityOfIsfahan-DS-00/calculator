@@ -5,6 +5,8 @@
 #include <QMouseEvent>
 #include <QPoint>
 
+#include "history_window.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -72,11 +74,18 @@ private slots:
 
     void on_pushButton_tree_clicked();
 
+    void on_pushButton_history_clicked();
+
+    void on_pushButton_ans_clicked();
+
+    void on_pushButton_reset_clicked();
+
 private:
     Ui::MainWindow *ui;
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
+    QVector<QString> history;
 };
 #endif // MAINWINDOW_H

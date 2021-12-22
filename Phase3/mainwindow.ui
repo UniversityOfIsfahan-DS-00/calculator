@@ -131,6 +131,9 @@ color: white;</string>
            <bold>true</bold>
           </font>
          </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="layoutDirection">
           <enum>Qt::LeftToRight</enum>
          </property>
@@ -178,6 +181,9 @@ QPushButton:hover
            <italic>true</italic>
            <bold>true</bold>
           </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
          </property>
          <property name="layoutDirection">
           <enum>Qt::RightToLeft</enum>
@@ -250,7 +256,7 @@ border-radius: 15px;</string>
            <property name="styleSheet">
             <string notr="true">background-color: white;
 color: black;
-border-radius: 15px;</string>
+border-radius: 5px;</string>
            </property>
            <property name="frameShape">
             <enum>QFrame::Panel</enum>
@@ -266,7 +272,7 @@ border-radius: 15px;</string>
             <number>14</number>
            </property>
            <item>
-            <widget class="QPushButton" name="pushButton_options">
+            <widget class="QPushButton" name="pushButton_tools">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -292,6 +298,9 @@ border-radius: 15px;</string>
                <bold>true</bold>
               </font>
              </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton
 {
@@ -307,7 +316,7 @@ QPushButton:hover
 }</string>
              </property>
              <property name="text">
-              <string>Options</string>
+              <string>Tools</string>
              </property>
             </widget>
            </item>
@@ -337,6 +346,9 @@ QPushButton:hover
                <italic>true</italic>
                <bold>true</bold>
               </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton
@@ -384,6 +396,9 @@ QPushButton:hover
                <bold>true</bold>
               </font>
              </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton
 {
@@ -430,6 +445,9 @@ QPushButton:hover
                <bold>true</bold>
               </font>
              </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton
 {
@@ -475,6 +493,9 @@ QPushButton:hover
                <italic>true</italic>
                <bold>true</bold>
               </font>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton
@@ -602,6 +623,9 @@ background-color: white;
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -641,6 +665,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -678,6 +705,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -718,6 +748,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -757,6 +790,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -794,6 +830,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -834,6 +873,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -872,6 +914,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -909,6 +954,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -954,6 +1002,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -992,6 +1043,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1032,6 +1086,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1071,6 +1128,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1109,6 +1169,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1146,6 +1209,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1186,6 +1252,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1224,6 +1293,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1264,6 +1336,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1302,6 +1377,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1342,6 +1420,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1379,6 +1460,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1419,6 +1503,9 @@ QPushButton:hover
                   <bold>true</bold>
                  </font>
                 </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
 {
@@ -1458,6 +1545,9 @@ QPushButton:hover
                   <italic>true</italic>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
@@ -1503,6 +1593,9 @@ QPushButton:hover
                   <weight>75</weight>
                   <bold>true</bold>
                  </font>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QPushButton
